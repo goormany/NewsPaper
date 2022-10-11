@@ -1,0 +1,57 @@
+from django.contrib.auth.models import User
+from news.models import *
+
+user1 = User.objects.create_user('goormany')
+user2 = User.objects.create_user('hool')
+
+author1 = Author.objects.create(authorUser=user1)
+author2 = Author.objects.create(authorUser=user2)
+
+Category.objects.create(name="Спорт")
+Category.objects.create(name="Палитика")
+Category.objects.create(name="Игры")
+Category.objects.create(name="Знания")
+
+post1 = Post.objects.create(title="Чемпионат по футболу", text="WOW FOOTBALL", category_choice=Post.News, author=author1)
+post2 = Post.objects.create(title="Чья власть?", text="Да.", author=author1)
+post3 = ost.objects.create(title="GTA VI", text="REAL?REAL?REAL?REAL?REAL?REAL?", author=author2)
+
+post1.postCategory.add(Category.objects.get(pk=1))
+post1.postCategory.add(Category.objects.get(pk=4))
+post2.postCategory.add(Category.objects.get(pk=2))
+post3.postCategory.add(Category.objects.get(pk=3))
+
+comment1 = Comment.objects.create(textComment="Первый коммент", commentPost=post1, commentUser=user2)
+comment2 = Comment.objects.create(textComment="2 коммент", commentPost=post1, commentUser=user1)
+comment3 = Comment.objects.create(textComment="3 коммент", commentPost=post2, commentUser=user2)
+comment4 = Comment.objects.create(textComment="4 коммент", commentPost=post3, commentUser=user2)
+
+post1.like()
+post2.dislike()
+post3.like()
+
+comment1.like()
+comment1.like()
+comment2.dislike()
+comment3.dislike()
+comment3.dislike()
+comment4.like()
+
+author1.update_raiting()
+author2.update_raiting()
+
+a = Author.objects.order_by("-raitingAuthor").first()
+for i in a:
+	i.raitingAuthor
+	i.authorUser
+
+p = Post.objects.order_by("-raitingPost")[:1]
+for i in p:
+	i.dateCreation
+	i.raitingPost
+	i.title
+	i.preview()
+	i.id
+	i.author.authorUser.username
+
+	
