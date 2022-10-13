@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+{% extends 'flatpages/default.html' %}
+
+{% block title %} ALL NEWS {% endblock %}
+
+{% block content %}
+{% if newss %}
+    {% for news in newss %}
+    <table>
+        <tr>
+            Название: {{news.title}}
+        </tr>
+        <tr>
+            Дата: {{news.dateCreation |date:'d M Y'}}
+        </tr>
+        <tr>
+            Превью: {{news.text | truncatewords:20}}
+        </tr>
+    </table>
+<hr>
+    {% endfor %}
+{%else %}
+    <h1>Нет новостей</h1>
+{% endif %}
+{% endblock %}

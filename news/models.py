@@ -20,9 +20,15 @@ class Author(models.Model):
         self.raitingAuthor = pRat*3 + cRat
         self.save()
 
+    def __str__(self):
+        return f"{self.authorUser.username}"
+
 
 class Category(models.Model):
     name = models.CharField(max_length=255, unique=True)
+
+    def __str__(self):
+        return self.name
 
 
 class Post(models.Model):
@@ -42,6 +48,9 @@ class Post(models.Model):
 
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     postCategory = models.ManyToManyField(Category, through="PostCategory")
+
+    def __str__(self):
+        return f"Title: {self.title}, Author: {self.author.authorUser.username}"
 
     def like(self):
         self.raitingPost += 1
