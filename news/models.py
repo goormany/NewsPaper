@@ -1,6 +1,7 @@
 from django.db import models
 from datetime import datetime
 from django.contrib.auth.models import User
+from django.urls import reverse
 from django.db.models import Sum
 
 
@@ -63,10 +64,16 @@ class Post(models.Model):
     def preview(self):
         return f'{self.text[0:124]}...'
 
+    def get_absolute_url(self):
+        return reverse('news_detail', args=[str(self.id)])
+
 
 class PostCategory(models.Model):
     postTrough = models.ForeignKey(Post, on_delete=models.CASCADE)
     categoryTrough = models.ForeignKey(Category, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.postTrough}"
 
 
 class Comment(models.Model):
