@@ -4,7 +4,7 @@ from .views import *
 
 urlpatterns = [
     path("news/", newsListView.as_view(), name='news_list'),
-    path("<int:pk>", newsDetailView.as_view(), name='news_detail'),
+    path("news/<int:pk>", newsDetailView.as_view(), name='news_detail'),
     path("news/search/", newsSearchView.as_view(), name='news_search'),
     path("news/create/", newsCreateView.as_view(), name='news_create'),
     path("articles/create/", articlesCreateView.as_view(), name='articles_create'),
