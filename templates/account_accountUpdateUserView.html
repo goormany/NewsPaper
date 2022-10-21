@@ -11,4 +11,9 @@
 
 <hr>
 
+{% if is_not_author %}
+<h2>Стать автором</h2>
+<button><a href="/account/setauthor/">ДА!</a></button><br><br>
+{% endif %}
+
 {% endblock %}

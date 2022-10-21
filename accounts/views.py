@@ -4,6 +4,9 @@ from .forms import UserUpdateForm
 from django.urls import reverse_lazy
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import redirect
+from django.contrib.auth.models import Group
+from django.contrib.auth.decorators import login_required
 
 
 class accountUserUpdateView(LoginRequiredMixin, UpdateView):
@@ -11,4 +14,19 @@ class accountUserUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'account_accountUpdateUserView.html'
     form_class = UserUpdateForm
     success_url = reverse_lazy('news_list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_not_author'] = not self.request.user.groups.filter(name='author').exists()
+        return context
+
+
+@login_required
+def set_me_author(request):
+    user = request.user
+    author_group = Group.objects.get(name='author')
+    if not request.user.groups.filter(name='author').exists():
+        author_group.user_set.add(user)
+
+    return redirect('/news/')
 
