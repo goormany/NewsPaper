@@ -1,4 +1,12 @@
 {% extends 'flatpages/default.html' %}
+
+{% block head %}
+{% if is_your_id == path %}
+{% else %}
+<meta http-equiv="refresh" content="5; url={% url 'account_update' is_your_id %}">
+{% endif %}
+{% endblock %}
+
 {% block content %}
 
 <hr>
@@ -10,7 +18,8 @@
     <input type="submit" value="Save">
 </form>
 {% else %}
-<h2><a href="{% url 'account_update' is_your_id %}">Вы пытаетесь изменить чужой профиль. Нажмите чтобы вернуть к изменениям своего профиля</a></h2>
+<h2><a href="{% url 'account_update' is_your_id %}">Вы пытаетесь изменить чужой профиль. Нажмите чтобы вернуть к изменениям своего профиля.
+Или в течении 5 секунд мы сделаем это автоматически</a></h2>
 {% endif %}
 
 <hr>
