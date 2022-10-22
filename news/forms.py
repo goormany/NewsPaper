@@ -10,7 +10,8 @@ class newsCreateForm(forms.ModelForm):
         fields = [
             'title',
             'text',
-            'author'
+            # 'author',
+            'postCategory',
         ]
 
 
@@ -21,5 +22,6 @@ class articlesCreateForm(forms.ModelForm):
         fields = [
             'title',
             'text',
-            'author'
+            # 'author',
+            'postCategory',
         ]

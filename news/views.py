@@ -48,6 +48,7 @@ class newsCreateView(PermissionRequiredMixin, CreateView):
     def form_valid(self, form):
         post = form.save(commit=False)
         post.category_choice = "NW"
+        post.author = Author.objects.get(authorUser=str(self.request.user.id))
         return super().form_valid(form)
 
 
@@ -60,6 +61,7 @@ class articlesCreateView(PermissionRequiredMixin, CreateView):
     def form_valid(self, form):
         post = form.save(commit=False)
         post.category_choice = "AR"
+        post.author = Author.objects.get(authorUser=str(self.request.user.id))
         return super().form_valid(form)
 
 
