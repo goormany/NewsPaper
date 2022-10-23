@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import *
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 from .filters import PostFilter
@@ -90,3 +91,30 @@ class articlesDeleteView(DeleteView):
     template_name = 'news_newsDeleteView.html'
     success_url = reverse_lazy('news_list')
 
+
+class categoriesListView(ListView):
+    model = Post
+    template_name = 'news_categoriesListView.html'
+    context_object_name = "categories_list"
+    paginate_by = 10
+
+    def get_queryset(self):
+        self.postCategory = get_object_or_404(Category, pk=self.kwargs['pk'])
+        queryset = Post.objects.filter(postCategory=self.postCategory).order_by('-dateCreation')
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_not_subscriber'] = self.request.user not in self.postCategory.subscribers.all()
+        context['category'] = self.postCategory
+        return context
+
+
+@login_required
+def add_me_to_category(request, pk):
+    user = request.user
+    category = Category.objects.get(pk=pk)
+    category.subscribers.add(user)
+
+    # return redirect('categories_list', category)
+    return redirect('/news/')

@@ -12,9 +12,9 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 
-load_dotenv()
+load_dotenv(find_dotenv())
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -61,6 +61,7 @@ INSTALLED_APPS = [
 
     'allauth.socialaccount.providers.google',
 ]
+DEFAULT_FROM_EMAIL = 'zarbot951@yandex.ru'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -100,6 +101,10 @@ AUTHENTICATION_BACKENDS = [
     # `allauth` specific authentication methods, such as login by e-mail
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
+
+ACCOUNT_EMAIL_VRIFICATION = 'mandatory'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_AUTHENTIFICATION_METHOD = 'email'
 
 WSGI_APPLICATION = 'NewsPaper.wsgi.application'
 
@@ -149,6 +154,12 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static/"),
 )
+
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = os.getenv("EMAIL_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_PASSWORD")
+EMAIL_USE_SSL = True
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

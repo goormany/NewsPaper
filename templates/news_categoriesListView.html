@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+{% extends 'flatpages/default.html' %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% block head %} {% endblock %}
+    <title>{% block title %} Categories {% endblock %}</title>
+</head>
+<body>
+{% block content %}
+
+{% if categories_list %}
+    {% for categories in categories_list %}
+
+    <table>
+        <tr>
+            Название: {{categories.title}}
+        </tr>
+        <tr>
+            Автор: {{categories.author}}
+        </tr>
+        <tr>
+            Дата: {{categories.dateCreation |date:'d M Y'}}
+        </tr>
+        <tr>
+            Превью: {{categories.text | truncatewords:20}}
+        </tr>
+        <tr>
+            Категоири: {% for category in categories.postCategory.all %} <a href="{%url 'categories_list' category.pk%}">{{category}} </a> {% endfor %}
+        </tr>
+    </table>
+
+    {% endfor %}
+
+{% else %}
+    <h2>Нет Новостей\Статей в это категории</h2>
+{% endif %}
+
+{% if is_not_subscriber %}
+<hr>
+<div align="center">
+    <button type='submit'><a href="{%url 'sub_category' category.pk%}">Подписаться на категорию</a></button>
+</div>
+{% endif %}
+<hr>
+
+<div align="center">
+       {% if page_obj.has_previous %}
+       <a href="?page=1">1</a>
+       {% if page_obj.previous_page_number != 1 %}
+           ...
+           <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+       {% endif %}
+   {% endif %}
+
+   {# Информация о текущей странице #}
+   {{ page_obj.number }}
+
+   {# Информация о следующих страницах #}
+   {% if page_obj.has_next %}
+       <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+       {% if paginator.num_pages != page_obj.next_page_number %}
+           ...
+           <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+       {% endif %}
+   {% endif %}
+</div>
+
+{% endblock %}
+</body>
+</html>
