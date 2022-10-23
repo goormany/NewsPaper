@@ -61,7 +61,6 @@ INSTALLED_APPS = [
 
     'allauth.socialaccount.providers.google',
 ]
-DEFAULT_FROM_EMAIL = 'zarbot951@yandex.ru'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -160,6 +159,8 @@ EMAIL_PORT = 465
 EMAIL_HOST_USER = os.getenv("EMAIL_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_PASSWORD")
 EMAIL_USE_SSL = True
+DEFAULT_FROM_EMAIL = os.getenv("EMAIL_USER")+"@yandex.ru"
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -175,4 +176,3 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_EMAIL_VERIFICATION = 'none'
