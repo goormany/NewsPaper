@@ -58,8 +58,10 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
 
     # allauth socialapp
-
     'allauth.socialaccount.providers.google',
+
+    # django-apscheduler
+    'django_apscheduler',
 ]
 
 MIDDLEWARE = [
@@ -182,3 +184,7 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 
 if DEBUG:
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
+
+APSCHEDULER_RUN_NOW_TIMEOUT = 25  # Seconds
