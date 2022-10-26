@@ -6,8 +6,8 @@ from django.db.models import Sum
 
 
 class Author(models.Model):
-    authorUser = models.OneToOneField(User, on_delete=models.CASCADE)
-    raitingAuthor = models.BigIntegerField(default=0)
+    authorUser = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Автор')
+    raitingAuthor = models.BigIntegerField(default=0, verbose_name='Рэйтинг автора')
 
     def update_raiting(self):
         postRat = self.post_set.aggregate(postRating=Sum("raitingPost"))
@@ -24,13 +24,21 @@ class Author(models.Model):
     def __str__(self):
         return f"{self.authorUser.username}"
 
+    class Meta:
+        verbose_name = ("Автор")
+        verbose_name_plural = ("Авторы")
+
 
 class Category(models.Model):
-    name = models.CharField(max_length=255, unique=True)
+    name = models.CharField(max_length=255, unique=True, verbose_name='Название категории')
     subscribers = models.ManyToManyField(User, related_name='categories')
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = ("Категория")
+        verbose_name_plural = ("Категории")
 
 
 class Post(models.Model):
@@ -42,17 +50,17 @@ class Post(models.Model):
         (Articles, "Статья")
     ]
 
-    title = models.CharField(max_length=255)
-    text = models.TextField()
-    category_choice = models.CharField(max_length=2, choices=POSITIONS, default=Articles)
-    dateCreation = models.DateTimeField(auto_now_add=True)
-    raitingPost = models.SmallIntegerField(default=0)
+    title = models.CharField(max_length=255, verbose_name='Название поста')
+    text = models.TextField( verbose_name='текст поста')
+    category_choice = models.CharField(max_length=2, choices=POSITIONS, default=Articles, verbose_name='Тип поста')
+    dateCreation = models.DateTimeField(auto_now_add=True, verbose_name='Дата создание поста')
+    raitingPost = models.SmallIntegerField(default=0, verbose_name='Рэйтинг поста')
 
-    author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE, verbose_name='Автор')
     postCategory = models.ManyToManyField(Category, through="PostCategory")
 
     def __str__(self):
-        return f"Title: {self.title}, Author: {self.author.authorUser.username}"
+        return f"ID: {self.id}, title: {self.title}, Author: {self.author.authorUser.username}"
 
     def like(self):
         self.raitingPost += 1
@@ -68,22 +76,30 @@ class Post(models.Model):
     def get_absolute_url(self):
         return reverse('news_detail', args=[str(self.id)])
 
+    class Meta:
+        verbose_name = ("Пост")
+        verbose_name_plural = ("Посты")
+
 
 class PostCategory(models.Model):
-    postTrough = models.ForeignKey(Post, on_delete=models.CASCADE)
-    categoryTrough = models.ForeignKey(Category, on_delete=models.CASCADE)
+    postTrough = models.ForeignKey(Post, on_delete=models.CASCADE, verbose_name='Пост')
+    categoryTrough = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категория')
 
     def __str__(self):
         return f"{self.postTrough}"
 
+    class Meta:
+        verbose_name = ("Пост с категориями")
+        verbose_name_plural = ("Посты с категориями")
+
 
 class Comment(models.Model):
-    textComment = models.CharField(max_length=128)
-    DateCreation = models.DateTimeField(auto_now_add=True)
-    raitingComment = models.SmallIntegerField(default=0)
+    textComment = models.CharField(max_length=128, verbose_name='Текст комментария')
+    DateCreation = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания комментария')
+    raitingComment = models.SmallIntegerField(default=0, verbose_name='Рэйтинг комментария')
 
-    commentPost = models.ForeignKey(Post, on_delete=models.CASCADE)
-    commentUser = models.ForeignKey(User, on_delete=models.CASCADE)
+    commentPost = models.ForeignKey(Post, on_delete=models.CASCADE, verbose_name='Пост')
+    commentUser = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Автор комментария')
 
     def like(self):
         self.raitingComment += 1
@@ -92,5 +108,12 @@ class Comment(models.Model):
     def dislike(self):
         self.raitingComment -= 1
         self.save()
+
+    def __str__(self):
+        return f'ID comment: {self.id}'
+
+    class Meta:
+        verbose_name = ("Комментарий")
+        verbose_name_plural = ("Комментарии")
 
 
