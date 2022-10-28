@@ -1,12 +1,22 @@
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
+from django.views import View
+
 from .models import *
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 from .filters import PostFilter
-import datetime
+from .tasks import hello, printer
 from django.urls import reverse_lazy
 from .forms import newsCreateForm, articlesCreateForm
 from django.contrib.auth.mixins import PermissionRequiredMixin
+
+
+class IndexView(View):
+    def get(self, request):
+        hello.delay()
+        printer.delay(10)
+        return HttpResponse('Hello!')
 
 
 class newsListView(ListView):

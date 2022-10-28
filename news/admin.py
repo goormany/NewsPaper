@@ -2,11 +2,13 @@ from django.contrib import admin
 from .models import *
 
 
+@admin.register(Author)
 class AuthorAdmin(admin.ModelAdmin):
     list_display = ('id', 'authorUser', 'raitingAuthor')
     list_display_links = ('id', 'authorUser',)
 
 
+@admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('id', 'name')
     list_display_links = ('id', 'name',)
@@ -19,6 +21,7 @@ class CommentInlineAdmin(admin.StackedInline):
     extra = 1
 
 
+@admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'category_choice', 'author', 'dateCreation', 'raitingPost')
     list_display_links = ('id', 'title',)
@@ -30,8 +33,9 @@ class PostAdmin(admin.ModelAdmin):
     list_editable = ('category_choice',)
 
 
+@admin.register(PostCategory)
 class PostCategoryAdmin(admin.ModelAdmin):
-    list_display = ('id','postTrough', 'categoryTrough')
+    list_display = ('id', 'postTrough', 'categoryTrough')
     list_display_links = ('id', 'postTrough',)
 
 
@@ -41,8 +45,3 @@ class CommentAdminInline(admin.ModelAdmin):
     list_display_links = ('id', 'commentPost', )
 
 
-admin.site.register(Author, AuthorAdmin)
-admin.site.register(Category, CategoryAdmin)
-admin.site.register(Post, PostAdmin)
-admin.site.register(PostCategory, PostCategoryAdmin)
-# admin.site.register(Comment, CommentAdmin)
