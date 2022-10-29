@@ -3,15 +3,12 @@
 
 <hr>
 
-{% if access %}
-    <form action="" method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Create">
-    </form>
-{% else %}
- <h2 class="text-center">За сегодня Вы оставили максимальное количество постов</h2>
-{% endif %}
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Create">
+</form>
+<!-- <h2 class="text-center">За сегодня Вы оставили максимальное количество постов</h2>-->
 
 <hr>
 
