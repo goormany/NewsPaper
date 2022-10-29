@@ -57,16 +57,6 @@ class newsCreateView(PermissionRequiredMixin, CreateView):
     template_name = 'news_newsCreateView.html'
     permission_required = ('news.add_post')
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     date = datetime.datetime.today().strftime('%d %m %Y')
-    #     len_post_author_in_day = len(Post.objects.filter(dateCreation__day=date.split(" ")[0], dateCreation__month=date.split(" ")[1], dateCreation__year=date.split(" ")[2], author=Author.objects.get(authorUser=self.request.user.id).id))
-    #     if len_post_author_in_day >= 3:
-    #         context["access"] = False
-    #     else:
-    #         context["access"] = True
-    #     return context
-
     def form_valid(self, form):
         post = form.save(commit=False)
         post.category_choice = "NW"
@@ -79,16 +69,6 @@ class articlesCreateView(PermissionRequiredMixin, CreateView):
     form_class = articlesCreateForm
     template_name = 'news_newsCreateView.html'
     permission_required = ('news.add_post')
-
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     date = datetime.datetime.today().strftime('%d %m %Y')
-    #     len_post_author_in_day = len(Post.objects.filter(dateCreation__day=date.split(" ")[0], dateCreation__month=date.split(" ")[1], dateCreation__year=date.split(" ")[2], author=Author.objects.get(authorUser=self.request.user.id).id))
-    #     if len_post_author_in_day >= 3:
-    #         context["access"] = False
-    #     else:
-    #         context["access"] = True
-    #     return context
 
     def form_valid(self, form):
         post = form.save(commit=False)
