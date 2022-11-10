@@ -103,9 +103,9 @@ class articlesDeleteView(DeleteView):
     success_url = reverse_lazy('news_list')
 
 
-class categoriesListView(ListView):
+class categoriesView(ListView):
     model = Post
-    template_name = 'news_categoriesListView.html'
+    template_name = 'news_categoriesView.html'
     context_object_name = "categories_list"
     paginate_by = 10
 
@@ -119,6 +119,12 @@ class categoriesListView(ListView):
         context['is_not_subscriber'] = self.request.user not in self.postCategory.subscribers.all()
         context['category'] = self.postCategory
         return context
+
+
+class CategoryListView(ListView):
+    model = Category
+    template_name = 'news_categoriesListView.html'
+    context_object_name = "categories_list"
 
 
 @login_required
