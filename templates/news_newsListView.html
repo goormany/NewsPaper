@@ -8,7 +8,7 @@
     {% for news in newss %}
     <table>
         <tr>
-            Название: {{news.title}}
+            Название: <a href="{% url 'news_detail' news.pk %}">{{news.title}}</a>
         </tr>
         <tr>
             Автор: {{news.author}}
