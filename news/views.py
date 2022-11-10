@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
-
+from django.core.cache import cache
 from .models import *
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 from .filters import PostFilter
@@ -31,6 +31,15 @@ class newsDetailView(DetailView):
     model = Post
     template_name = "news_newsDetailView.html"
     context_object_name = "news"
+
+    def get_object(self, *args, **kwargs):
+        obj = cache.get(f"news-{self.kwargs['pk']}", None)
+
+        if not obj:
+            obj = super().get_object(queryset=self.queryset)
+            cache.set(f"news-{self.kwargs['pk']}", obj)
+
+        return obj
 
 
 class newsSearchView(ListView):
